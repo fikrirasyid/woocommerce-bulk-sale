@@ -3,7 +3,7 @@
 <div class="wrap">
 	<h2><?php _e( 'Bulk Sale', 'woocommerce-bulk-sale' ); ?></h2>
 
-	<form action="">
+	<form action="edit.php?post_type=product&page=woocommerce-bulk-sale" method="post">
 
 	<h3><?php _e( 'A. Select Products', 'woocommerce-bulk-sale' ); ?></h3>
 	
