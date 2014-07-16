@@ -80,14 +80,6 @@
 						update_post_meta( $product_id, '_sale_price_dates_to', $timestamp_to );
 					}
 
-					// Notice the time change
-					if( $timestamp_from > current_time( 'timestamp' ) ){
-						echo "<h3>";
-						
-						printf( __( 'The price does not changed now. The sale is scheduled to happen between %s to %s', 'woocommerce-bulk-sale' ), $_POST['sale_from'], $_POST['sale_to'] );
-
-						echo "</h3>";
-					}
 				} else {
 					// Update the price right away
 					update_post_meta( $product_id, '_price', $sale_price );
@@ -96,6 +88,20 @@
 
 			// Update the sale data
 			wc_scheduled_sales();
+
+			// display time notification
+			if( isset( $_POST['sale_from'] ) && $_POST['sale_from'] != '' ){
+				$timestamp_from = strtotime( $_POST['sale_from'] );
+
+				// Notice the time change
+				if( $timestamp_from > current_time( 'timestamp' ) ){
+					echo "<h3>";
+					
+					printf( __( 'The price does not changed now. The sale is scheduled to happen between %s to %s', 'woocommerce-bulk-sale' ), $_POST['sale_from'], $_POST['sale_to'] );
+
+					echo "</h3>";
+				}
+			}			
 
 			// Display the result
 			echo "<ul>";
