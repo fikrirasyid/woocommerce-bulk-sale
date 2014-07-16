@@ -35,11 +35,55 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			$this->plugin_url = untrailingslashit( plugins_url( '/', __FILE__ ) );
 			$this->plugin_dir = plugin_dir_path( __FILE__ );
 
+			// Register activation task
+			register_activation_hook( __FILE__, array( $this, 'activation' ) );
+
+			// Register deactivation task
+			register_deactivation_hook( __FILE__, array( $this, 'deactivation' ) );
+
 			// Enqueueing scripts
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 
 			// Add submenu
 			add_action( 'admin_menu', array( $this, 'add_page' ) );
+
+			// Refresh scheduled sales every 5 minutes
+			add_action( 'woocommerce_scheduled_sales_micro', 'wc_scheduled_sales' );
+		}
+
+		/**
+		 * Register new interval
+		 * 
+		 * @return array of modified schedule
+		 */
+		function cron_five_minutes( $schedule ){
+			$schedules['every5minutes'] = array(
+				'interval' => 300,
+				'display' => __( 'Every 5 minutes', 'woocommerce-sale-timepicker' )
+			);
+
+			return $schedules;
+		}
+
+		/**
+		 * Activation task
+		 * 
+		 * @return void
+		 */
+		function activation(){
+			if( !wp_next_scheduled( 'woocommerce_scheduled_sales_micro' ) ){
+				wp_schedule_event( current_time( 'timestamp', wp_timezone_override_offset() ), 'every5minutes', 'woocommerce_scheduled_sales_micro' );
+			}
+
+		}
+
+		/**
+		 * Deactivation task
+		 * 
+		 * @return void
+		 */
+		function deactivation(){
+			wp_clear_scheduled_hook( 'woocommerce_scheduled_sales_micro' );
 		}
 
 		/**
