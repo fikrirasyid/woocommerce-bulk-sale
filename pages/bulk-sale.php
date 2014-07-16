@@ -20,7 +20,7 @@
 
 					echo "<label for='product-{$product->id}' style='display: block;'>";
 
-					echo "<a href='{$product->post->guid}'><strong class='name'>{$product->post->post_title}</strong></a><br />";
+					echo "<a href='{$product->post->guid}'><strong class='name'>{$product->post->post_title}</strong></a> - <strong style='font-size: .8em; text-transform: uppercase;'>{$product->product_type}</strong><br />";
 
 					if( $product->is_sale ){
 						echo "<del style='color: #afafaf; display: block;' class='regular-price'>". __( 'Price :', 'woocommerce-bulk-sale' ) ."{$regular_price}</del>";

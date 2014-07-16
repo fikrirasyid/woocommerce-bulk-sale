@@ -146,7 +146,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 			if( !empty( $items ) ){
 				foreach ($items as $key => $item) {
-					$product = new WC_Product( $item->ID );
+					$product = get_product( $item->ID );
 
 					$products[$item->ID] 				= $product;
 					$products[$item->ID]->regular_price = $product->get_regular_price();

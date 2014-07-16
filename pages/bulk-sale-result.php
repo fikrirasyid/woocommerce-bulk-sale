@@ -109,7 +109,7 @@
 			foreach ( $_POST['product'] as $product_id ) {
 
 				// Preview result
-				$product 		= new WC_Product( $product_id );
+				$product 		= get_product( $product_id );
 				$price 			= wc_price( $product->price );
 				$regular_price 	= wc_price( $product->regular_price );
 				$permalink 		= get_permalink( $product_id );
