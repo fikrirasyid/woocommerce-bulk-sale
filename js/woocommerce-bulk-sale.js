@@ -7,7 +7,7 @@ jQuery(document).ready(function($) {
 		controlType: 'select',
 		numberOfMonths: 1,
 		onSelect: function( selectedDate ) {
-			var option = $(this).is('#sale-from') ? "minDate" : "maxDate";
+			var option = $(this).is('#sale-from') ? "maxDate" : "minDate";
 			var date = $(this).datepicker('getDate');
 			dates.not( this ).datetimepicker( "option", option, date );
 		}
