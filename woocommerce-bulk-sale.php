@@ -152,11 +152,41 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 					$products[$item->ID]->regular_price = $product->get_regular_price();
 					$products[$item->ID]->sale_price 	= $product->get_sale_price();
 					$products[$item->ID]->price 		= $product->get_price();
-					$products[$item->ID]->is_sale 		= $product->is_on_sale();					
+					$products[$item->ID]->is_sale 		= $product->is_on_sale();	
+					$products[$item->ID]->permalink 	= get_permalink( $product->id );					
 				}
 			}
 
 			return $products;
+		}
+
+		/**
+		 * Get variation
+		 * 
+		 * @return obj
+		 */
+		function get_variations( $id ){
+			$items = get_posts( array(
+				'posts_per_page' 	=> -1,
+				'post_type'			=> 'product_variation',
+				'post_parent' 		=> $id
+			) );	
+
+			$products = array();
+
+			if( !empty( $items ) ){
+				foreach ($items as $key => $item) {
+					$product = get_product( $item->ID );
+
+					$products[$item->ID] 				= $product;
+					$products[$item->ID]->regular_price = $product->get_regular_price();
+					$products[$item->ID]->sale_price 	= $product->get_sale_price();
+					$products[$item->ID]->price 		= $product->get_price();
+					$products[$item->ID]->is_sale 		= $product->is_on_sale();
+				}
+			}
+
+			return $products;			
 		}
 
 	}	
