@@ -67,14 +67,14 @@
 
 	<br>
 	<h3><?php _e( 'C. Set Sale Schedule (Optional)', 'woocommerce-bulk-sale' ); ?></h3>
-	<table class="form-table">
+	<table class="form-table set-sale-schedule">
 		<tbody>
 			<tr>
 				<th scope="row">
 					<label for="sale-from"><?php _e('From', 'woocommerce-bulk-sale' ) ?></label>
 				</th>
 				<td>
-					<input type="text" name="sale-from" id="sale-from" class="regular-text set-schedule">
+					<input type="text" name="sale-from" id="sale-from" class="regular-text set-schedule" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])(\s(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]))?">
 				</td>
 			</tr>
 			<tr>
@@ -82,7 +82,7 @@
 					<label for="sale-to"><?php _e('To', 'woocommerce-bulk-sale' ) ?></label>
 				</th>
 				<td>
-					<input type="text" name="sale-to" id="sale-to" class="regular-text set-schedule">
+					<input type="text" name="sale-to" id="sale-to" class="regular-text set-schedule" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])(\s(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]))?">
 				</td>
 			</tr>
 		</tbody>

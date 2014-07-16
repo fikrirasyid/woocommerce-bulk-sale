@@ -25,16 +25,37 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 	
 	class Woocommerce_Bulk_Sale{
 
+		var $plugin_url;
 		var $plugin_dir;
 
 		/**
 		 * Init the method
 		 */
 		function __construct(){
+			$this->plugin_url = untrailingslashit( plugins_url( '/', __FILE__ ) );
 			$this->plugin_dir = plugin_dir_path( __FILE__ );
+
+			// Enqueueing scripts
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ) );
 
 			// Add submenu
 			add_action( 'admin_menu', array( $this, 'add_page' ) );
+		}
+
+		/**
+		 * Register and enqueue script
+		 */
+		function admin_scripts(){
+			wp_register_script( 'jquery-ui-timepicker', $this->plugin_url . '/js/jquery-ui-timepicker.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable' ) );
+			wp_register_script( 'woocommerce_bulk_sale', $this->plugin_url . '/js/woocommerce-bulk-sale.js', array( 'jquery-ui-timepicker' ) );
+
+			// Get current screen estate
+			$screen = get_current_screen();
+
+			// Only enqueue the script on bulk sale screen
+			if( 'product_page_woocommerce-bulk-sale' == $screen->id ){
+		    	wp_enqueue_script( 'woocommerce_bulk_sale' );
+			}
 		}
 
 		/**
