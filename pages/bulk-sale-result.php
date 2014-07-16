@@ -64,26 +64,8 @@
 					$sale_price = intval( $_POST['sale_price'] );
 				}
 
-				// Update sale price
-				$update_sale_price = update_post_meta( $product_id, '_sale_price', $sale_price );
-
-				// Update sale schedule Thou shalt provide both from and to
-				if( isset( $_POST['sale_from'] ) && $_POST['sale_from'] != '' &&
-					isset( $_POST['sale_to'] ) && $_POST['sale_to'] != ''
-				){
-					$timestamp_from = strtotime( $_POST['sale_from'] );
-					$timestamp_to 	= strtotime( $_POST['sale_to'] );
-
-					// Verify time range
-					if( $timestamp_from < $timestamp_to ){
-						update_post_meta( $product_id, '_sale_price_dates_from', $timestamp_from );
-						update_post_meta( $product_id, '_sale_price_dates_to', $timestamp_to );
-					}
-
-				} else {
-					// Update the price right away
-					update_post_meta( $product_id, '_price', $sale_price );
-				}
+				// Update the price
+				$this->set_product_price( $product_id, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
 			}
 
 			// Update the sale data

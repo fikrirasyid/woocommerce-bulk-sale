@@ -27,6 +27,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 
 		var $plugin_url;
 		var $plugin_dir;
+		var $current_time;
 
 		/**
 		 * Init the method
@@ -34,6 +35,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		function __construct(){
 			$this->plugin_url = untrailingslashit( plugins_url( '/', __FILE__ ) );
 			$this->plugin_dir = plugin_dir_path( __FILE__ );
+			$this->current_time = current_time( 'timestamp' );
 
 			// Register activation task
 			register_activation_hook( __FILE__, array( $this, 'activation' ) );
@@ -187,6 +189,58 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 
 			return $products;			
+		}
+
+		/**
+		 * Set product price
+		 * 
+		 * @param int product id
+		 * @param int sale price
+		 * @param int timestamp sale from
+		 * @param int timestamp sale to
+		 * 
+		 * @return bool
+		 */
+		function set_product_price( $product_id = false, $sale_price = false, $sale_from = false, $sale_to = false ){
+
+			// Feed the status
+			$statuses = array();
+
+			// Update sale price
+			$update_sale_price = update_post_meta( $product_id, '_sale_price', $sale_price );
+
+			// Push status
+			array_push( $statuses, true );
+
+			// Update sale schedule if there's given time, update _price right away if there's no data given
+			if( isset( $sale_from ) && $sale_from != '' && isset( $sale_to ) && $sale_to != '' ){
+				$timestamp_from = strtotime( $sale_from );
+				$timestamp_to 	= strtotime( $sale_to );
+
+				// Verify time range
+				if( $timestamp_from < $timestamp_to ){
+					$update_from =  update_post_meta( $product_id, '_sale_price_dates_from', $timestamp_from );
+					$update_to = update_post_meta( $product_id, '_sale_price_dates_to', $timestamp_to );
+
+					// Push statuses
+					array_push( $statuses, $update_from );
+					array_push( $statuses, $update_to );
+				}
+
+			} else {
+				// Update the price right away
+				$update_sale_price = update_post_meta( $product_id, '_price', $sale_price );
+
+				// Push status
+				array_push( $statuses, $update_sale_price );
+			}		
+
+			// Return status
+			if( !in_array( false, $statuses ) ){
+				return false;
+			} else {
+				return true;
+			}
 		}
 
 	}	
