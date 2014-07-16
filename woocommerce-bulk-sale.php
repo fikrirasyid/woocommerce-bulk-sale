@@ -80,7 +80,11 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		 * @return void
 		 */
 		function render_page(){
-			include_once( $this->plugin_dir . 'pages/bulk-sale.php' );
+			if( isset( $_POST['do_bulk_sale'] ) ){
+				include_once( $this->plugin_dir . 'pages/bulk-sale-result.php' );
+			} else {
+				include_once( $this->plugin_dir . 'pages/bulk-sale.php' );
+			}
 		}
 
 		/**

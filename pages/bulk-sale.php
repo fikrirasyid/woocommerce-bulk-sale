@@ -44,10 +44,10 @@
 		<tbody>
 			<tr>
 				<th scope="row">
-					<label for="sale-type"><?php _e( 'Sale Type', 'woocommerce-bulk-sale' ); ?></label>
+					<label for="sale_type"><?php _e( 'Sale Type', 'woocommerce-bulk-sale' ); ?></label>
 				</th>
 				<td>
-					<select name="sale-type" id="sale-type">
+					<select name="sale_type" id="sale_type">
 						<option value="fixed"><?php _e( 'Fixed Price', 'woocommerce-bulk-sale' ); ?></option>
 						<option value="percentage"><?php _e( 'Decreased by Percentage Price', 'woocommerce-bulk-sale' ); ?></option>
 					</select>
@@ -56,10 +56,10 @@
 
 			<tr>
 				<th scope="row">
-					<label for="sale-price"><?php _e( 'Sale Price', 'woocommerce-bulk-sale' ); ?></label>
+					<label for="sale_price"><?php _e( 'Sale Price', 'woocommerce-bulk-sale' ); ?></label>
 				</th>
 				<td>
-					<input type="number" name="sale-price" class="regular-text" placeholder="Type number of price / percentage here">
+					<input type="number" name="sale_price" class="regular-text" placeholder="Type number of price / percentage here">
 				</td>
 			</tr>
 		</tbody>
@@ -71,23 +71,25 @@
 		<tbody>
 			<tr>
 				<th scope="row">
-					<label for="sale-from"><?php _e('From', 'woocommerce-bulk-sale' ) ?></label>
+					<label for="sale_from"><?php _e('From', 'woocommerce-bulk-sale' ) ?></label>
 				</th>
 				<td>
-					<input type="text" name="sale-from" id="sale-from" class="regular-text set-schedule" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])(\s(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]))?">
+					<input type="text" name="sale_from" id="sale_from" class="regular-text set-schedule" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])(\s(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]))?">
 				</td>
 			</tr>
 			<tr>
 				<th scope="row">
-					<label for="sale-to"><?php _e('To', 'woocommerce-bulk-sale' ) ?></label>
+					<label for="sale_to"><?php _e('To', 'woocommerce-bulk-sale' ) ?></label>
 				</th>
 				<td>
-					<input type="text" name="sale-to" id="sale-to" class="regular-text set-schedule" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])(\s(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]))?">
+					<input type="text" name="sale_to" id="sale_to" class="regular-text set-schedule" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])(\s(([0-1]?[0-9])|([2][0-3])):([0-5]?[0-9]))?">
 				</td>
 			</tr>
 		</tbody>
 	</table>
 
+	<?php wp_nonce_field( 'bulk_sale' ); ?>
+	<input type="hidden" name="do_bulk_sale" value="yes" />
 	<input type="submit" value="<?php _e( 'Save Bulk Sale', 'woocommerce-bulk-sale' ); ?>" class="button button-primary">
 </form>
 </div>
