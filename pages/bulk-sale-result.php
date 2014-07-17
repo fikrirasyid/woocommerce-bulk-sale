@@ -77,6 +77,19 @@
 
 						foreach ( $variations as $variation ) {
 
+							// Set sale price
+							if( 'percentage' == $type ){
+								
+								$price = intval( $variation->get_regular_price() );
+								
+								$sale_price = $price - ( $price * $multiplier );
+
+								// Just in case the result is smaller than zero
+								if( 0 > $sale_price ){
+									$sale_price = 0;
+								}
+							}					
+
 							$update_variation = $this->set_product_price( $variation->variation_id, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
 
 						}
