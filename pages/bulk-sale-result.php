@@ -47,10 +47,10 @@
 
 				$product_id = intval( $product_id );
 
+				$product_old = get_product( intval(  $product_id ) );
+
 				// Set sale price
 				if( 'percentage' == $type ){
-
-					$product_old = new WC_Product( intval(  $product_id ) );
 					
 					$price = intval( $product_old->get_regular_price() );
 					
@@ -66,6 +66,22 @@
 
 				// Update the price
 				$this->set_product_price( $product_id, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
+
+				// More actions for variable product
+				if( 'variable' == $product_old->product_type ){
+
+					$variations = $this->get_variations( $product_id );
+
+					// Loop the variable and update its data
+					if( !empty( $variations ) ){
+
+						foreach ( $variations as $variation ) {
+
+							$update_variation = $this->set_product_price( $variation->variation_id, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
+
+						}
+					}
+				}
 			}
 
 			// Update the sale data
@@ -77,11 +93,13 @@
 
 				// Notice the time change
 				if( $timestamp_from > current_time( 'timestamp' ) ){
+
 					echo "<h3>";
 					
 					printf( __( 'The price does not changed now. The sale is scheduled to happen between %s to %s', 'woocommerce-bulk-sale' ), $_POST['sale_from'], $_POST['sale_to'] );
 
 					echo "</h3>";
+
 				}
 			}			
 
