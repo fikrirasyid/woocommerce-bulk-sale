@@ -125,6 +125,13 @@
 						echo "<span class='price'>". __( 'Price :', 'woocommerce-bulk-sale' ) ." {$price}</span>";
 					}
 
+					// Display variable data
+					if( 'variable' == $product->product_type ){
+
+						$this->the_variations( $product->id );					
+						
+					}
+
 				echo "</li>";	
 
 			}

@@ -32,33 +32,8 @@
 					// Variable Product has more to be displayed
 					if( 'variable' == $product->product_type ){
 
-						echo "<ul>";
-
-						$variations = $this->get_variations( $product->id );
-
-						foreach ($variations as $variation ) {
-
-							echo "<li style='margin: 10px 0 0 0; padding: 10px; background: #efefef; position: relative;'>";
-
-								foreach ($variation->variation_data as $var_key => $var_value) {
-
-									echo str_replace( '_', ' ', str_replace( 'attribute_', '', $var_key ) ) . ' : ' . $var_value . '<br>';
-
-								}
-
-								if( $variation->is_sale ){
-									echo "<del style='color: #afafaf; display: block;' class='regular-price'>". __( 'Price :', 'woocommerce-bulk-sale' ) ."{$regular_price}</del>";
-									echo "<span class='price'>". __( 'Sale Price :', 'woocommerce-bulk-sale' )  ."{$price}</span>";
-								} else {
-									echo "<span class='price'>". __( 'Price :', 'woocommerce-bulk-sale' ) ." {$price}</span>";
-								}
-
-							echo "</li>";
-
-						}
-
-						echo "</ul>";
-
+						$this->the_variations( $product->id );
+						
 					}
 
 					echo "</label>";

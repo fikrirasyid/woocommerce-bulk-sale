@@ -243,6 +243,47 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 		}
 
+		/**
+		 * Display variation data
+		 * 
+		 * @param product ID
+		 * 
+		 * @return void
+		 */
+		function the_variations( $product_id = false ){
+
+			echo "<ul>";
+
+			$variations = $this->get_variations( $product_id );
+
+			foreach ($variations as $variation ) {
+
+				$price 			= wc_price( $variation->get_price() );
+
+				$regular_price 	= wc_price( $variation->get_regular_price() );				
+
+				echo "<li style='margin: 10px 0 0 0; padding: 10px; background: #efefef; position: relative;'>";
+
+					foreach ($variation->variation_data as $var_key => $var_value) {
+
+						echo str_replace( '_', ' ', str_replace( 'attribute_', '', $var_key ) ) . ' : ' . $var_value . '<br>';
+
+					}
+
+					if( $variation->is_on_sale() ){
+						echo "<del style='color: #afafaf; display: block;' class='regular-price'>". __( 'Price :', 'woocommerce-bulk-sale' ) ."{$regular_price}</del>";
+						echo "<span class='price'>". __( 'Sale Price :', 'woocommerce-bulk-sale' )  ."{$price}</span>";
+					} else {
+						echo "<span class='price'>". __( 'Price :', 'woocommerce-bulk-sale' ) ." {$price}</span>";
+					}
+
+				echo "</li>";
+
+			}
+
+			echo "</ul>";
+		}
+
 	}	
 	new Woocommerce_Bulk_Sale;
 }
