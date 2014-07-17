@@ -1,4 +1,13 @@
 jQuery(document).ready(function($) { 
+	// Select all product
+	$('#toggle-all-product').change(function(){
+		if( $(this).is(':checked') ){
+			$("input[name='product[]']").prop( 'checked', true );
+		} else {
+			$("input[name='product[]']").prop( 'checked', false );
+		}
+	});
+
 	// Rebuilding the UX, using datetimepicker
 	var dates = $( ".set-sale-schedule input" ).datetimepicker({
 		defaultDate: "",

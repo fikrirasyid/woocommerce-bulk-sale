@@ -6,6 +6,10 @@
 	<form action="edit.php?post_type=product&page=woocommerce-bulk-sale" method="post">
 
 	<h3><?php _e( 'A. Select Products', 'woocommerce-bulk-sale' ); ?></h3>
+
+	<p>
+		<input type="checkbox" id="toggle-all-product"> <label for="toggle-all-product"><?php _e( 'Select All Product', 'woocommerce-bulk-sale' ); ?></label>
+	</p>
 	
 	<ul style=" -webkit-column-count: 3; -moz-column-count: 3; column-count: 3;">
 		<?php
@@ -33,7 +37,7 @@
 					if( 'variable' == $product->product_type ){
 
 						$this->the_variations( $product->id );
-						
+
 					}
 
 					echo "</label>";
