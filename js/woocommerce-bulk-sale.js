@@ -33,4 +33,39 @@ jQuery(document).ready(function($) {
 		timeFormat: "HH:mm",
 		numberOfMonths: 1,
 	});	
+
+	// Load more products
+	$('#bulk-sale-wrap').on( 'click', '#next-products', function(e){
+		e.preventDefault();
+
+		// Variables
+		var source = $(this).attr('href');
+
+		// Loading state
+		$('#next-products, #next-products-loading').toggle();
+
+		// Load the next products
+		$.ajax({
+			type : 'GET',
+			url : source,
+			async : false,
+			success : function( response ){
+				var parsed_response = $.parseHTML( response );
+				var products = $(parsed_response).find('#products');
+				var next_products_url = $(parsed_response).find('#next-products').attr('href');
+
+				// Append products
+				$('#products').append( products );
+				$('#next-products').attr({ 'href' : next_products_url });
+
+				// Unloading state
+				if( products.find('li').length > 0 ){
+					$('#next-products, #next-products-loading').toggle();
+				} else {
+					$('#next-products-loading').text( 'All posts have been loaded' );
+				}
+
+			}
+		});
+	} );
 });

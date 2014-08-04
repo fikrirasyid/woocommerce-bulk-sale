@@ -140,8 +140,9 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		 */
 		function get_products(){
 			$items = get_posts( array(
-				'posts_per_page' => -1,
-				'post_type'	=> 'product'
+				'posts_per_page' 	=> 20,
+				'post_type'			=> 'product',
+				'paged' 			=> $this->get_paged()
 			) );	
 
 			$products = array();
@@ -282,6 +283,31 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			}
 
 			echo "</ul>";
+		}
+
+		/**
+		 * Get current paged
+		 * Enable store with LOTS of products to use this plugin
+		 * 
+		 * @return int
+		 */
+		function get_paged(){
+			if( isset( $_GET['paged'] ) ){
+				$paged = intval( $_GET['paged'] );
+			} else {
+				$paged = 1;
+			}
+
+			return $paged;
+		}
+
+		/**
+		 * Get next paged
+		 * 
+		 * @return int
+		 */
+		function get_next_paged(){
+			return $this->get_paged() + 1;
 		}
 
 	}	
