@@ -16,9 +16,14 @@ jQuery(document).ready(function($) {
 		controlType: 'select',
 		numberOfMonths: 1,
 		onSelect: function( selectedDate ) {
-			var option = $(this).is('#sale-from') ? "maxDate" : "minDate";
+
 			var date = $(this).datepicker('getDate');
-			dates.not( this ).datetimepicker( "option", option, date );
+
+			if( $(this).is('#sale_from') ){
+				dates.not(this).datetimepicker( "option", "minDate", date );
+			} else {
+				dates.not(this).datetimepicker( "option", "maxDate", date );
+			}
 		}
 	});
 
