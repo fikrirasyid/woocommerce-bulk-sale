@@ -127,6 +127,12 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		 */
 		function render_page(){
 			if( isset( $_POST['do_bulk_sale'] ) ){
+				// Delete onsale transient ID when saving the result
+				delete_transient( 'wc_products_onsale' );
+
+				// Adding hook for this action
+				do_action( 'woocommerce_bulk_sale_do_bulk_sale' );
+				
 				include_once( $this->plugin_dir . 'pages/bulk-sale-result.php' );
 			} else {
 				include_once( $this->plugin_dir . 'pages/bulk-sale.php' );
