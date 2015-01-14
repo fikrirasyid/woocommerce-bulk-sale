@@ -94,6 +94,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		function admin_scripts(){
 			wp_register_script( 'jquery-ui-timepicker', $this->plugin_url . '/js/jquery-ui-timepicker.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable' ) );
 			wp_register_script( 'woocommerce_bulk_sale', $this->plugin_url . '/js/woocommerce-bulk-sale.js', array( 'jquery-ui-timepicker' ) );
+			wp_register_style( 'woocommerce_bulk_sale', $this->plugin_url . '/css/woocommerce-bulk-sale.css', array() );
 
 			// Get current screen estate
 			$screen = get_current_screen();
@@ -101,6 +102,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			// Only enqueue the script on bulk sale screen
 			if( 'product_page_woocommerce-bulk-sale' == $screen->id ){
 		    	wp_enqueue_script( 'woocommerce_bulk_sale' );
+		    	wp_enqueue_style( 'woocommerce_bulk_sale' );
 			}
 		}
 
