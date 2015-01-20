@@ -1,3 +1,20 @@
+/*
+* Product filtering
+*/
+#woocommerce-bulk-sale-tablenav{
+	height: auto;
+	margin-bottom: 20px;
+	position: relative;
+	padding-right: 130px;
+}
+
+#toggle-all-product-wrap{
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 5px 0;
+}
+
 /*! jQuery UI - v1.11.2 - 2015-01-14
 * http://jqueryui.com
 * Includes: core.css, datepicker.css, theme.css

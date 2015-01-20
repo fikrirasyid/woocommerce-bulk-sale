@@ -3,14 +3,12 @@
 <div class="wrap" id="bulk-sale-wrap">
 	<h2><?php _e( 'Bulk Sale', 'woocommerce-bulk-sale' ); ?></h2>
 
-	<form action="edit.php?post_type=product&page=woocommerce-bulk-sale" method="post">
-
 	<h3><?php _e( 'A. Select Products', 'woocommerce-bulk-sale' ); ?></h3>
-
-	<p>
-		<input type="checkbox" id="toggle-all-product"> <label for="toggle-all-product"><?php _e( 'Select All Product', 'woocommerce-bulk-sale' ); ?></label>
-	</p>
 	
+	<?php $this->get_product_filters(); ?>
+
+	<form action="edit.php?post_type=product&page=woocommerce-bulk-sale" method="post" id="woocommerce-bulk-sale-form">
+
 	<ul id="products" style="">
 		<?php
 			foreach ($this->get_products() as $product) {
@@ -49,7 +47,12 @@
 	</ul>
 
 	<p style="text-align: center; padding: 30px 0 0;">
-		<a href="<?php echo admin_url(); ?>edit.php?post_type=product&page=woocommerce-bulk-sale&paged=<?php echo $this->get_next_paged(); ?>" id="next-products" class="button"><?php _e( 'Load More Products', 'woocommerce-bulk-sale' ); ?></a>
+		<?php 
+			// Preparing next products URL query
+			$next_products_query 			= $_GET;
+			$next_products_query['paged'] 	= $this->get_next_paged();
+		?>
+		<a href="<?php echo add_query_arg( $next_products_query, admin_url() . 'edit.php' ); ?>" id="next-products" class="button"><?php _e( 'Load More Products', 'woocommerce-bulk-sale' ); ?></a>
 		<span id="next-products-loading" style="display: none;"><?php _e( 'Loading Products...', 'woocommerce-bulk-sale' ); ?></span>
 	</p>
 	

@@ -147,11 +147,63 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		 * @return
 		 */
 		function get_products(){
-			$items = get_posts( array(
+			/**
+			 * Default get product arguments
+			 */
+			$args = array(
 				'posts_per_page' 	=> 20,
 				'post_type'			=> 'product',
-				'paged' 			=> $this->get_paged()
-			) );	
+				'paged' 			=> $this->get_paged(),
+			);
+
+			/**
+			 * Filter by taxonomies functionality
+			 */
+
+			// Get product's taxonomy
+			$taxonomies 	= $this->get_product_taxonomies( false );
+
+			// ready for filtering
+			$is_filtering 	= array();
+
+			// Loop taxonomies and check 
+			foreach ( $taxonomies as $taxonomy ) {
+
+				// If particular param is used, push to $is_filtering
+				if( $this->get_param( $taxonomy ) && '0' != $this->get_param( $taxonomy ) ){
+
+					$is_filtering[] = $taxonomy;
+
+				}
+
+			}
+
+			// If $is_filtering isn't empty, we assume that user wants to filter the product output
+			if( ! empty( $is_filtering ) ){
+
+				$args['tax_query'] = array();
+
+				// Count $is_filtering, use AND relation if it has more than one taxonomy used
+				$filter_count = count( $is_filtering );
+
+				if( $filter_count > 1 ){
+					$args['tax_query']['and'] = 'AND';
+				}
+
+				// Loop the $is_filtering and add product argument
+				foreach ( $is_filtering as $tax_filter ) {
+
+					$args['tax_query'][] = array(
+						'taxonomy' => $tax_filter,
+						'field'		=> 'id',
+						'terms'		=> array( intval( $this->get_param( $tax_filter ) ) )
+					);
+
+				}
+			}
+
+			// Get products data
+			$items = get_posts( $args );	
 
 			$products = array();
 
@@ -316,6 +368,141 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		 */
 		function get_next_paged(){
 			return $this->get_paged() + 1;
+		}
+
+		/**
+		 * Get query string parameters
+		 * 
+		 * @access private
+		 * @param string 	query string key
+		 * @return string|bool
+		 */
+		private function get_param( $key, $default = false ){
+			if( isset( $_GET[$key] ) ){
+				return $_GET[$key];
+			} else {
+				return $default;
+			}
+		}
+
+		/**
+		 * Get product taxonomies
+		 * @access private
+		 * @return array 	string of listed taxonomies
+		 */
+		private function get_product_taxonomies( $include_tax_data = true ){
+			$taxonomies = get_object_taxonomies( array( 'product' ) );
+
+			$product_tax = array();
+
+			foreach ( $taxonomies as $taxonomy ) {
+
+				// Skip all pa_ prefixed taxonomy; it is used for product variation
+				if( 'pa_' == substr( $taxonomy, 0, 3 ) ){
+
+					continue;
+
+				}
+
+				if( $include_tax_data ){
+
+					$product_tax[] = get_taxonomy( $taxonomy );
+
+				} else {
+
+					$product_tax[] = $taxonomy;
+
+				}
+
+			}
+
+			return $product_tax;
+		}
+
+		/**
+		 * Display product filters
+		 * 
+		 * @access private
+		 * @return void
+		 */
+		private function get_product_filters(){
+			?>
+
+			<div class="tablenav top" id="woocommerce-bulk-sale-tablenav">
+
+				<form action="edit.php" id="woocommerce-bulk-sale-filters" method="GET">
+
+					<input type="hidden" name="post_type" value="product" >
+					<input type="hidden" name="page" value="woocommerce-bulk-sale" >
+
+					<?php
+
+					// Get product taxonomies
+					$taxonomies = $this->get_product_taxonomies();
+
+					// Loop the taxonomies
+					if( ! empty( $taxonomies ) ){
+
+						foreach ( $taxonomies as $taxonomy ) {
+
+							echo '<select name="'. $taxonomy->name .'" id="product-filter-'. $taxonomy->name .'" style="margin-right: 5px;" >';
+
+							$this->get_product_filters_options( $taxonomy->name, $taxonomy->labels->name, $this->get_param( $taxonomy->name ) );
+
+							echo '</select>';					
+
+						}
+
+					}
+
+					?>
+
+					<input type="submit" name="filter_action" class="button" value="<?php _e( 'Filter', 'woocommerce-bulk-sale' ); ?>">
+
+				</form>
+
+
+				<p id="toggle-all-product-wrap">
+					<input type="checkbox" id="toggle-all-product"> <label for="toggle-all-product"><?php _e( 'Select All Product', 'woocommerce-bulk-sale' ); ?></label>
+				</p>
+			
+			</div><!-- .tablenav.top -->
+
+			<?php
+
+		}
+
+		/**
+		 * Display product filters' options
+		 * 
+		 * @access private
+		 * @return void
+		 */
+		private function get_product_filters_options( $taxonomy_name, $taxonomy_label_name, $default = false ){
+
+			// Get taxonomy list
+			$terms = get_terms( $taxonomy_name );
+
+			echo '<option value="">'. sprintf( __( 'Select a %s', 'woocommerce-bulk-sale' ), $taxonomy_label_name ) .'</option>';
+
+			if( ! empty( $terms ) ){
+
+				foreach ( $terms as $term ) {
+
+					if( $default == $term->term_id ){
+
+						echo '<option value="'. $term->term_id .'" selected="selected">'. $term->name .'</option>';
+
+					} else {
+
+						echo '<option value="'. $term->term_id .'">'. $term->name .'</option>';
+
+					}
+
+				}
+
+			}
+
 		}
 
 	}	
