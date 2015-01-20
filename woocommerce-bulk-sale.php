@@ -28,14 +28,16 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		var $plugin_url;
 		var $plugin_dir;
 		var $current_time;
+		var $posts_per_page;
 
 		/**
 		 * Init the method
 		 */
 		function __construct(){
-			$this->plugin_url = untrailingslashit( plugins_url( '/', __FILE__ ) );
-			$this->plugin_dir = plugin_dir_path( __FILE__ );
-			$this->current_time = current_time( 'timestamp' );
+			$this->plugin_url 		= untrailingslashit( plugins_url( '/', __FILE__ ) );
+			$this->plugin_dir 		= plugin_dir_path( __FILE__ );
+			$this->current_time 	= current_time( 'timestamp' );
+			$this->posts_per_page 	= 20;
 
 			// Register activation task
 			register_activation_hook( __FILE__, array( $this, 'activation' ) );
@@ -151,7 +153,7 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			 * Default get product arguments
 			 */
 			$args = array(
-				'posts_per_page' 	=> 20,
+				'posts_per_page' 	=> $this->posts_per_page,
 				'post_type'			=> 'product',
 				'paged' 			=> $this->get_paged(),
 			);

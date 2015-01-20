@@ -15,6 +15,11 @@
 	margin: 5px 0;
 }
 
+#next-products-wrap{
+	text-align: center; 
+	padding: 30px 0 0;
+}
+
 /*! jQuery UI - v1.11.2 - 2015-01-14
 * http://jqueryui.com
 * Includes: core.css, datepicker.css, theme.css

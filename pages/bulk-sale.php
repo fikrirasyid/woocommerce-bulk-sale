@@ -4,7 +4,7 @@
 	<h2><?php _e( 'Bulk Sale', 'woocommerce-bulk-sale' ); ?></h2>
 
 	<h3><?php _e( 'A. Select Products', 'woocommerce-bulk-sale' ); ?></h3>
-	
+
 	<?php $this->get_product_filters(); ?>
 
 	<form action="edit.php?post_type=product&page=woocommerce-bulk-sale" method="post" id="woocommerce-bulk-sale-form">
@@ -46,15 +46,20 @@
 		?>
 	</ul>
 
-	<p style="text-align: center; padding: 30px 0 0;">
-		<?php 
-			// Preparing next products URL query
-			$next_products_query 			= $_GET;
-			$next_products_query['paged'] 	= $this->get_next_paged();
-		?>
+	<?php 
+		
+		if( count( $this->get_products() ) >= $this->posts_per_page ) :
+
+		// Preparing next products URL query
+		$next_products_query 			= $_GET;
+		$next_products_query['paged'] 	= $this->get_next_paged();
+	?>
+	<p id="next-products-wrap">
 		<a href="<?php echo add_query_arg( $next_products_query, admin_url() . 'edit.php' ); ?>" id="next-products" class="button"><?php _e( 'Load More Products', 'woocommerce-bulk-sale' ); ?></a>
 		<span id="next-products-loading" style="display: none;"><?php _e( 'Loading Products...', 'woocommerce-bulk-sale' ); ?></span>
 	</p>
+
+	<?php endif; ?>
 	
 	<br>
 	<h3><?php _e( 'B. Set Price', 'woocommerce-bulk-sale' ); ?></h3>

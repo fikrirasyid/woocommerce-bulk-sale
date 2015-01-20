@@ -47,7 +47,8 @@ jQuery(document).ready(function($) {
 		var source = $(this).attr('href');
 
 		// Loading state
-		$('#next-products, #next-products-loading').toggle();
+		$('#next-products').hide().remove();
+		$('#next-products-loading').show();
 
 		// Load the next products
 		$.ajax({
@@ -55,21 +56,16 @@ jQuery(document).ready(function($) {
 			url : source,
 			async : false,
 			success : function( response ){
-				var parsed_response = $.parseHTML( response );
-				var products = $(parsed_response).find('#products');
-				var next_products_url = $(parsed_response).find('#next-products').attr('href');
+				var parsed_response	 = $.parseHTML( response );
+				var products 		 = $(parsed_response).find('#products');
+				var next_products 	 = $(parsed_response).find('#next-products');
 
 				// Append products
 				$('#products').append( products );
-				$('#next-products').attr({ 'href' : next_products_url });
+				$('#next-products-wrap').prepend( next_products );
 
-				// Unloading state
-				if( products.find('li').length > 0 ){
-					$('#next-products, #next-products-loading').toggle();
-				} else {
-					$('#next-products-loading').text( 'All posts have been loaded' );
-				}
-
+				// Hide loading state
+				$('#next-products-loading').hide();
 			}
 		});
 	} );
