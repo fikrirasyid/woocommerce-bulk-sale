@@ -48,11 +48,11 @@
 				$product_id = intval( $product_id );
 
 				$product_old = get_product( intval(  $product_id ) );
+					
+				$price = intval( $product_old->get_regular_price() );
 
 				// Set sale price
 				if( 'percentage' == $type ){
-					
-					$price = intval( $product_old->get_regular_price() );
 					
 					$sale_price = $price - ( $price * $multiplier );
 
@@ -76,11 +76,11 @@
 					if( !empty( $variations ) ){
 
 						foreach ( $variations as $variation ) {
+								
+							$price = intval( $variation->get_regular_price() );
 
 							// Set sale price
 							if( 'percentage' == $type ){
-								
-								$price = intval( $variation->get_regular_price() );
 								
 								$sale_price = $price - ( $price * $multiplier );
 
