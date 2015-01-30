@@ -264,13 +264,22 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 		 * 
 		 * @return bool
 		 */
-		function set_product_price( $product_id = false, $sale_price = false, $sale_from = false, $sale_to = false ){
+		function set_product_price( $product_id = false, $price = 0, $sale_price = 0, $sale_from = false, $sale_to = false ){
 
 			// Feed the status
 			$statuses = array();
 
 			// Update sale price
-			$update_sale_price = update_post_meta( $product_id, '_sale_price', $sale_price );
+			// If sale price is equal or below price, remove to post meta 
+			if( $sale_price < $price ){
+
+				$update_sale_price = update_post_meta( $product_id, '_sale_price', $sale_price );
+
+			} else {
+
+				delete_post_meta( $product_id, '_sale_price' );
+
+			}
 
 			// Push status
 			array_push( $statuses, true );

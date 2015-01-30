@@ -65,7 +65,7 @@
 				}
 
 				// Update the price
-				$this->set_product_price( $product_id, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
+				$this->set_product_price( $product_id, $price, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
 
 				// More actions for variable product
 				if( 'variable' == $product_old->product_type ){
@@ -90,7 +90,7 @@
 								}
 							}					
 
-							$update_variation = $this->set_product_price( $variation->variation_id, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
+							$update_variation = $this->set_product_price( $variation->variation_id, $price, $sale_price, $_POST['sale_from'], $_POST['sale_to'] );
 
 						}
 					}
