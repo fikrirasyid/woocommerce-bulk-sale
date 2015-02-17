@@ -39,6 +39,9 @@ if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', g
 			$this->current_time 	= current_time( 'timestamp' );
 			$this->posts_per_page 	= 20;
 
+			// Register five minutes interval cron
+			add_filter( 'cron_schedules', array( $this, 'cron_five_minutes' ) );
+
 			// Register activation task
 			register_activation_hook( __FILE__, array( $this, 'activation' ) );
 
